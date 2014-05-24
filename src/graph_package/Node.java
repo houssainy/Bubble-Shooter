@@ -6,17 +6,14 @@ public class Node {
 
 	// Ball colour
 	private int colour;
-	// Outer Edges
-	private ArrayList<Node> children;
-	// Inner Edges
-	private ArrayList<Node> parents;
+	// Adjacent nodes
+	private ArrayList<Node> adjacentNodes;
 
 	/**
 	 * Constructor.
 	 */
 	public Node() {
-		children = new ArrayList<Node>();
-		parents = new ArrayList<Node>();
+		adjacentNodes = new ArrayList<Node>();
 	}
 
 	/**
@@ -36,34 +33,18 @@ public class Node {
 	/**
 	 * Add New Child
 	 * 
-	 * @param child
+	 * @param adjacent
 	 */
-	public void addChild(Node child) {
-		child.addChild(child);
+	public void addAdjacent(Node adjacent) {
+		adjacent.addAdjacent(adjacent);
 	}
 
 	/**
 	 * 
 	 * @return Children
 	 */
-	public ArrayList<Node> getChildren() {
-		return children;
+	public ArrayList<Node> getAdjacents() {
+		return adjacentNodes;
 	}
 
-	/**
-	 * Add new Parent
-	 * 
-	 * @param parent
-	 */
-	public void addParent(Node parent) {
-		parent.addChild(parent);
-	}
-
-	/**
-	 * 
-	 * @return Parents
-	 */
-	public ArrayList<Node> getParents() {
-		return parents;
-	}
 }
