@@ -8,9 +8,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
+    <Button
+        android:id="@+id/exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="58dp"
+        android:text="Exit" />
+
+    <Button
+        android:id="@+id/chose_lvl_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/exit_button"
+        android:layout_marginBottom="45dp"
+        android:layout_toLeftOf="@+id/exit_button"
+        android:text="Choose Level" />
+
+    <Button
+        android:id="@+id/option_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/chose_lvl_button"
+        android:layout_alignBottom="@+id/chose_lvl_button"
+        android:layout_toRightOf="@+id/exit_button"
+        android:text="Option" />
 
 </RelativeLayout>
