@@ -9,30 +9,29 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/exit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="58dp"
-        android:text="Exit" />
-
-    <Button
         android:id="@+id/chose_lvl_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/exit_button"
-        android:layout_marginBottom="45dp"
-        android:layout_toLeftOf="@+id/exit_button"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="Choose Level" />
+
+    <Button
+        android:id="@+id/exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/option_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:text="Exit" />
 
     <Button
         android:id="@+id/option_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/chose_lvl_button"
-        android:layout_alignBottom="@+id/chose_lvl_button"
-        android:layout_toRightOf="@+id/exit_button"
+        android:layout_below="@+id/chose_lvl_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
         android:text="Option" />
 
 </RelativeLayout>
