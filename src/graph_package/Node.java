@@ -6,16 +6,23 @@ public class Node {
 
 	// Ball colour
 	private int colour;
+	private int xPos, yPos; // Position of the node in the matrix view
 	// Adjacent nodes
 	private ArrayList<Node> adjacentNodes;
 
 	/**
 	 * Constructor.
 	 */
-	public Node() {
+	public Node(int xPos, int yPos, int color) {
+		this.xPos = xPos; 
+		this.yPos = yPos;
+		this.colour = color;
+		
 		adjacentNodes = new ArrayList<Node>();
 	}
 
+	public Node(){};
+	
 	/**
 	 * @return node colour
 	 */

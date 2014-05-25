@@ -1,6 +1,11 @@
 package com.example.bubleshooter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import graph_package.Graph;
+import graph_package.Node;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -19,27 +24,90 @@ public class BubbleShooterActivity extends Activity {
 
 		setContentView(R.layout.activity_bubble_shooter);
 
-		GameSurface gameSurface = new GameSurface(this,
-				getGraphFromFile(getIntent().getStringExtra("fileName")));
-
-		((RelativeLayout) findViewById(R.id.game_surface)).addView(gameSurface);
+		((RelativeLayout) findViewById(R.id.game_surface))
+				.addView(getGameSurface(getIntent().getStringExtra("fileName")));
 	}
 
-	private Graph getGraphFromFile(String stringExtra) {
-		// TODO Auto-generated method stub
-		return null;
+	private GameSurface getGameSurface(String fileName) {
+		Graph graph = null;
+		Node[][] chart = null;
+		try {
+			Scanner in = new Scanner(new File(fileName));
+			int rows = in.nextInt();
+			int cols = in.nextInt();
+
+			chart = new Node[rows][cols];
+
+			Node startNode = new Node();
+			graph = new Graph(startNode);
+
+			// Build Graph and Node[][]
+			int temp;
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < cols; j++) {
+					if ((temp = in.nextInt()) != 0) {
+						Node newNode = new Node(j, i, getBall(temp));
+
+						if (i - 1 >= 0) { // Connect to previous rows
+							if (j - 1 >= 0 && chart[i - 1][j - 1] != null) {
+								// left corner
+								graph.addAdjacentNode(chart[i - 1][j - 1],
+										newNode);
+							}
+
+							if (j + 1 < cols && chart[i - 1][j + 1] != null) {
+								// right corner
+								graph.addAdjacentNode(chart[i - 1][j + 1],
+										newNode);
+							}
+						}
+
+						if (j - 2 >= 0 && chart[i][j - 2] != null) {
+							// Left
+							graph.addAdjacentNode(chart[i][j - 2], newNode);
+						}
+
+						chart[i][j] = newNode;
+					}
+				}
+			}
+
+			// Connect start node to the first row
+			for (int i = 0; i < chart[0].length; i++)
+				if (chart[0][i] != null)
+					graph.addAdjacentNode(startNode, chart[0][i]);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return new GameSurface(this, graph, chart);
+	}
+
+	private int getBall(int ballNumber) {
+		switch (ballNumber) {
+		case 1:
+			return R.drawable.ball_1;
+		case 2:
+			return R.drawable.ball_2;
+		case 3:
+			return R.drawable.ball_3;
+		}
+
+		return 0;
 	}
 
 	private class GameSurface extends SurfaceView implements
 			SurfaceHolder.Callback {
 
 		private Graph graph;
+		private Node[][] chart;
 		private SurfaceHolder holder;
 
-		public GameSurface(Context context, Graph graph) {
+		public GameSurface(Context context, Graph graph, Node[][] chart) {
 			super(context);
 
 			this.graph = graph;
+			this.chart = chart;
 
 			holder = getHolder();
 			holder.addCallback(this);
@@ -48,6 +116,12 @@ public class BubbleShooterActivity extends Activity {
 		@Override
 		protected void onDraw(Canvas canvas) {
 			super.onDraw(canvas);
+			for (int i = 0; i < chart.length; i++) {
+				for (int j = 0; j < chart[i].length; j++) {
+					if (chart[i][j] != null)
+						canvas.drawCircle(i * 100, j * 100, 50, null);
+				}
+			}
 		}
 
 		@Override
