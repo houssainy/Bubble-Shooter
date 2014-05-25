@@ -29,7 +29,7 @@ public class LevelChooserActivity extends Activity implements OnClickListener {
 		case R.id.level_one:
 			intent = new Intent(
 					"com.example.bubleshooter.BUBBLESHOOTERACTIVITY");
-			intent.putExtra("fileName", "levels//levelOne.txt");
+			intent.putExtra("fileName", "levelOne.txt");
 
 			break;
 		}

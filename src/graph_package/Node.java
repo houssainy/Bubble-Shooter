@@ -21,7 +21,9 @@ public class Node {
 		adjacentNodes = new ArrayList<Node>();
 	}
 
-	public Node(){};
+	public Node(){
+		adjacentNodes = new ArrayList<Node>();
+	}
 	
 	/**
 	 * @return node colour
@@ -43,7 +45,7 @@ public class Node {
 	 * @param adjacent
 	 */
 	public void addAdjacent(Node adjacent) {
-		adjacent.addAdjacent(adjacent);
+		adjacentNodes.add(adjacent);
 	}
 
 	/**

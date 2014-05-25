@@ -1,13 +1,15 @@
 package com.example.bubleshooter;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import graph_package.Graph;
 import graph_package.Node;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -32,11 +34,13 @@ public class BubbleShooterActivity extends Activity {
 		Graph graph = null;
 		Node[][] chart = null;
 		try {
-			Scanner in = new Scanner(new File(fileName));
+
+			AssetManager am = this.getAssets();
+			Scanner in = new Scanner(am.open(fileName));
 			int rows = in.nextInt();
 			int cols = in.nextInt();
 
-			chart = new Node[rows][cols];
+			chart = new Node[10][cols];
 
 			Node startNode = new Node();
 			graph = new Graph(startNode);
@@ -79,6 +83,8 @@ public class BubbleShooterActivity extends Activity {
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return new GameSurface(this, graph, chart);
 	}
@@ -101,6 +107,10 @@ public class BubbleShooterActivity extends Activity {
 
 		private Graph graph;
 		private Node[][] chart;
+
+		private int xRatio = 0;
+		private int yRatio = 0;
+
 		private SurfaceHolder holder;
 
 		public GameSurface(Context context, Graph graph, Node[][] chart) {
@@ -118,8 +128,13 @@ public class BubbleShooterActivity extends Activity {
 			super.onDraw(canvas);
 			for (int i = 0; i < chart.length; i++) {
 				for (int j = 0; j < chart[i].length; j++) {
-					if (chart[i][j] != null)
-						canvas.drawCircle(i * 100, j * 100, 50, null);
+					if (chart[i][j] != null) {
+						Bitmap bitmap = BitmapFactory.decodeResource(
+								this.getResources(), chart[i][j].getColour());
+						
+						canvas.drawBitmap(bitmap, j * xRatio, i * yRatio, null);
+
+					}
 				}
 			}
 		}
@@ -137,16 +152,15 @@ public class BubbleShooterActivity extends Activity {
 
 		}
 
-		int coutn = 0;
-
 		@Override
 		public void surfaceCreated(SurfaceHolder holders) {
 			// TODO Auto-generated method stub
 
 			Canvas canvas = holder.lockCanvas();
+			xRatio = canvas.getWidth() / chart[0].length;
+			yRatio = canvas.getHeight() / chart.length;
 
-			canvas.drawBitmap(BitmapFactory.decodeResource(getResources(),
-					R.drawable.ball_1), 100, 100 + coutn * 10, null);
+			onDraw(canvas);
 			holder.unlockCanvasAndPost(canvas);
 
 		}
