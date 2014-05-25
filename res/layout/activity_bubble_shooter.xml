@@ -6,8 +6,7 @@
     android:orientation="vertical"
     android:weightSum="1" >
 
-    <com.example.bubleshooter.GameSurface
-        android:background="@color/transparent"
+    <RelativeLayout
         android:id="@+id/game_surface"
         android:layout_width="match_parent"
         android:layout_height="0dp"
