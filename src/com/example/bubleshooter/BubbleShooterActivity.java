@@ -132,7 +132,7 @@ public class BubbleShooterActivity extends Activity {
 						Bitmap bitmap = BitmapFactory.decodeResource(
 								this.getResources(), chart[i][j].getColour());
 						
-						canvas.drawBitmap(bitmap, j * xRatio, i * yRatio, null);
+						canvas.drawBitmap(bitmap, j * xRatio - bitmap.getWidth()/2 , i * yRatio - bitmap.getHeight()/2, null);
 
 					}
 				}
