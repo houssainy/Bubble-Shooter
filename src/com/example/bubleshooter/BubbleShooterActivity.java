@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import graph_package.Graph;
 import graph_package.Node;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -78,8 +79,8 @@ public class BubbleShooterActivity extends Activity {
 
 			// Connect start node to the first row
 			for (int i = 0; i < chart[0].length; i++)
-				if (chart[0][i] != null)
-					graph.addAdjacentNode(startNode, chart[0][i]);
+				if (chart[1][i] != null)
+					graph.addAdjacentNode(startNode, chart[1][i]);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -131,8 +132,10 @@ public class BubbleShooterActivity extends Activity {
 					if (chart[i][j] != null) {
 						Bitmap bitmap = BitmapFactory.decodeResource(
 								this.getResources(), chart[i][j].getColour());
-						
-						canvas.drawBitmap(bitmap, j * xRatio - bitmap.getWidth()/2 , i * yRatio - bitmap.getHeight()/2, null);
+
+						canvas.drawBitmap(bitmap,
+								j * xRatio - bitmap.getWidth() / 2, i * yRatio
+										- bitmap.getHeight() / 2, null);
 
 					}
 				}
@@ -152,6 +155,7 @@ public class BubbleShooterActivity extends Activity {
 
 		}
 
+		@SuppressLint("WrongCall")
 		@Override
 		public void surfaceCreated(SurfaceHolder holders) {
 			// TODO Auto-generated method stub
