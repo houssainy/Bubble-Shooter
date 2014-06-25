@@ -14,8 +14,8 @@ public class Node {
 	 * Constructor.
 	 */
 	public Node(int xPos, int yPos, int color) {
-		this.xPos = xPos; 
-		this.yPos = yPos;
+		this.setxPos(xPos); 
+		this.setyPos(yPos);
 		this.colour = color;
 		
 		adjacentNodes = new ArrayList<Node>();
@@ -54,6 +54,22 @@ public class Node {
 	 */
 	public ArrayList<Node> getAdjacents() {
 		return adjacentNodes;
+	}
+
+	public int getxPos() {
+		return xPos;
+	}
+
+	public void setxPos(int xPos) {
+		this.xPos = xPos;
+	}
+
+	public int getyPos() {
+		return yPos;
+	}
+
+	public void setyPos(int yPos) {
+		this.yPos = yPos;
 	}
 
 }
