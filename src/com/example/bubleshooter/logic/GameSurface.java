@@ -2,7 +2,9 @@ package com.example.bubleshooter.logic;
 
 import graph_package.Graph;
 import graph_package.Node;
-import android.content.Context;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,8 +26,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder holder;
 	private Canvas canvas;
 
-	public GameSurface(Context context, Graph graph, Node[][] chart) {
-		super(context);
+	private Activity activity;
+
+	public GameSurface(Activity activity, Graph graph, Node[][] chart) {
+		super(activity);
+
+		this.activity = activity;
 
 		this.graph = graph;
 		this.chart = chart;
@@ -100,6 +106,78 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	/**
+	 * Connect the given node to its adjacents
+	 * 
+	 * @param newNode
+	 */
+	private void connectNewNode(Node newNode) {
+		int xPos = newNode.getxPos();
+		int yPos = newNode.getyPos();
+
+		if (xPos - 1 >= 0 && chart[yPos][xPos - 1] != null)// Left
+			chart[yPos][xPos - 1].addAdjacent(newNode);
+
+		if (xPos + 1 < chart[0].length && chart[yPos][xPos + 1] != null)// Right
+			chart[yPos][xPos + 1].addAdjacent(newNode);
+
+		if (yPos - 1 >= 0 && chart[yPos - 1][xPos] != null)// Up
+			chart[yPos - 1][xPos].addAdjacent(newNode);
+
+		if (yPos - 1 >= 0 && xPos - 1 >= 0 && chart[yPos - 1][xPos - 1] != null)// Up
+																				// left
+			chart[yPos - 1][xPos - 1].addAdjacent(newNode);
+
+		if (yPos - 1 >= 0 && xPos + 1 < chart[0].length
+				&& chart[yPos - 1][xPos + 1] != null)// Up Right
+			chart[yPos - 1][xPos + 1].addAdjacent(newNode);
+	}
+
+	/**
+	 * Check if the game is ended( win or loose )
+	 */
+	public void checkGame() {
+
+	}
+
+	/**
+	 * Show win message, and show the option to continue to next level or replay
+	 */
+	public void showWinMessage() {
+
+	}
+
+	/**
+	 * Show loose message and show option to replay
+	 */
+	public void showLooseMessage() {
+		AlertDialog alert = new AlertDialog.Builder(getContext()).create();
+		alert.setCancelable(false);
+
+		alert.setMessage("You Loose!");
+		alert.setButton(AlertDialog.BUTTON_POSITIVE, "Replay",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+
+				});
+		alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Exit",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						activity.finish();
+					}
+
+				});
+
+		alert.show();
+
+	}
+
+	/**
 	 * 
 	 * @author Mohamed
 	 * 
@@ -113,11 +191,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 			int touchX = params[0];
 			int touchY = params[1];
 
-			moveUp();
-			return null;
+			return moveUp();
+
 		}
 
-		private void moveUp() {
+		/**
+		 * Move the ball up in straight line
+		 * 
+		 * @return game updated?
+		 */
+		private Boolean moveUp() {
 			boolean loose = true;
 
 			int x = startX;
@@ -137,7 +220,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 				holder.unlockCanvasAndPost(canvas);
 
 				try {
-					Thread.sleep(100);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -147,17 +230,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 				loose = false;
 			}
 
-			// No update
-			if (loose) {
+			if (loose)// No Update
+				return false;
 
-			}
-
+			connectNewNode(newNode);
+			return true;
 		}
 
 		@Override
 		protected void onPostExecute(Boolean result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+
+			if (result) {// The game is still maybe continue
+				checkGame();
+			} else {// Game ended
+				showLooseMessage();
+			}
 		}
 
 	}
